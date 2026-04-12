@@ -253,26 +253,11 @@ dependencies = [
 
 [[package]]
 name = "convergio-db"
-version = "0.1.6"
-source = "git+https://github.com/Roberdan/convergio-sdk?tag=convergio-sdk-v0.1.6#175aaec0da0e1fe3f6d1384ca0c6d259c12db268"
-dependencies = [
- "chrono",
- "convergio-types 0.1.6",
- "r2d2",
- "r2d2_sqlite",
- "rusqlite",
- "serde",
- "serde_json",
- "tracing",
-]
-
-[[package]]
-name = "convergio-db"
 version = "0.1.7"
 source = "git+https://github.com/Roberdan/convergio-sdk?tag=v0.1.7#8d9c143cd5a6c16be5eb274cc09b2540307b620a"
 dependencies = [
  "chrono",
- "convergio-types 0.1.7",
+ "convergio-types",
  "r2d2",
  "r2d2_sqlite",
  "rusqlite",
@@ -287,10 +272,10 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "chrono",
- "convergio-db 0.1.7",
+ "convergio-db",
  "convergio-mesh",
- "convergio-telemetry 0.1.7",
- "convergio-types 0.1.7",
+ "convergio-telemetry",
+ "convergio-types",
  "http-body-util",
  "hyper",
  "rusqlite",
@@ -304,20 +289,20 @@ dependencies = [
 
 [[package]]
 name = "convergio-mesh"
-version = "0.1.0"
-source = "git+https://github.com/Roberdan/convergio-mesh?tag=v0.1.0#79c7c0997b22248485ba8e16eb78dd458ad81f1a"
+version = "0.1.2"
+source = "git+https://github.com/Roberdan/convergio-mesh?tag=v0.1.1#e1cbbc839b461c6db31003d9191cc632c9b150fc"
 dependencies = [
  "axum",
  "base64",
  "chrono",
- "convergio-db 0.1.6",
+ "convergio-db",
  "convergio-security",
- "convergio-telemetry 0.1.6",
- "convergio-types 0.1.6",
+ "convergio-telemetry",
+ "convergio-types",
  "hex",
  "hmac",
  "hostname",
- "rand 0.8.5",
+ "rand 0.9.3",
  "reqwest",
  "rusqlite",
  "serde",
@@ -330,15 +315,15 @@ dependencies = [
 
 [[package]]
 name = "convergio-security"
-version = "0.1.6"
-source = "git+https://github.com/Roberdan/convergio-sdk?tag=convergio-sdk-v0.1.6#175aaec0da0e1fe3f6d1384ca0c6d259c12db268"
+version = "0.1.7"
+source = "git+https://github.com/Roberdan/convergio-sdk?tag=v0.1.7#8d9c143cd5a6c16be5eb274cc09b2540307b620a"
 dependencies = [
  "axum",
  "base64",
  "chacha20poly1305",
  "chrono",
- "convergio-db 0.1.6",
- "convergio-types 0.1.6",
+ "convergio-db",
+ "convergio-types",
  "getrandom 0.2.17",
  "hmac",
  "rusqlite",
@@ -351,41 +336,15 @@ dependencies = [
 
 [[package]]
 name = "convergio-telemetry"
-version = "0.1.6"
-source = "git+https://github.com/Roberdan/convergio-sdk?tag=convergio-sdk-v0.1.6#175aaec0da0e1fe3f6d1384ca0c6d259c12db268"
-dependencies = [
- "convergio-types 0.1.6",
- "serde",
- "serde_json",
- "tracing",
- "tracing-appender",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "convergio-telemetry"
 version = "0.1.7"
 source = "git+https://github.com/Roberdan/convergio-sdk?tag=v0.1.7#8d9c143cd5a6c16be5eb274cc09b2540307b620a"
 dependencies = [
- "convergio-types 0.1.7",
+ "convergio-types",
  "serde",
  "serde_json",
  "tracing",
  "tracing-appender",
  "tracing-subscriber",
-]
-
-[[package]]
-name = "convergio-types"
-version = "0.1.6"
-source = "git+https://github.com/Roberdan/convergio-sdk?tag=convergio-sdk-v0.1.6#175aaec0da0e1fe3f6d1384ca0c6d259c12db268"
-dependencies = [
- "axum",
- "chrono",
- "dirs",
- "serde",
- "serde_json",
- "thiserror 1.0.69",
 ]
 
 [[package]]
