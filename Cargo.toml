@@ -1,0 +1,31 @@
+[workspace]
+resolver = "2"
+members = ["crates/convergio-delegation"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "LicenseRef-Convergio-Community"
+repository = "https://github.com/Roberdan/convergio-delegation"
+
+[workspace.dependencies]
+# SDK dependencies
+convergio-sdk = { git = "https://github.com/Roberdan/convergio-sdk", tag = "v0.1.7" }
+convergio-types = { git = "https://github.com/Roberdan/convergio-sdk", tag = "v0.1.7" }
+convergio-db = { git = "https://github.com/Roberdan/convergio-sdk", tag = "v0.1.7" }
+convergio-telemetry = { git = "https://github.com/Roberdan/convergio-sdk", tag = "v0.1.7" }
+
+# External convergio crates
+# TODO: uncomment when convergio-file-transport repo is published on GitHub
+# convergio-file-transport = { git = "https://github.com/Roberdan/convergio-file-transport", tag = "v0.1.0" }
+convergio-mesh = { git = "https://github.com/Roberdan/convergio-mesh", tag = "v0.1.0" }
+
+# Common deps — pin same versions as SDK for compatibility
+chrono = { version = "0.4", features = ["serde"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.44", features = ["macros", "rt-multi-thread", "signal", "sync", "time", "fs", "io-util", "process"] }
+tracing = "0.1"
+axum = { version = "0.7", features = ["ws", "multipart"] }
+rusqlite = { version = "0.32", features = ["bundled", "functions"] }
+uuid = { version = "1", features = ["v4"] }
