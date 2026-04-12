@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/Roberdan/convergio-delegation/compare/convergio-delegation-v0.1.1...convergio-delegation-v0.1.2) (2026-04-12)
+
+
+### Documentation
+
+* add .env.example with required environment variables ([#3](https://github.com/Roberdan/convergio-delegation/issues/3)) ([8b505f3](https://github.com/Roberdan/convergio-delegation/commit/8b505f3b728a8dee81b13093a2ab414211a69a8b))
+
 ## [0.1.1](https://github.com/Roberdan/convergio-delegation/compare/convergio-delegation-v0.1.0...convergio-delegation-v0.1.1) (2026-04-12)
 
 
