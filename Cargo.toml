@@ -10,10 +10,10 @@ repository = "https://github.com/Roberdan/convergio-delegation"
 
 [workspace.dependencies]
 # SDK dependencies
-convergio-sdk = { git = "https://github.com/Roberdan/convergio-sdk", tag = "v0.1.7" }
-convergio-types = { git = "https://github.com/Roberdan/convergio-sdk", tag = "v0.1.7", version = "0.1.6" }
-convergio-db = { git = "https://github.com/Roberdan/convergio-sdk", tag = "v0.1.7", version = "0.1.6" }
-convergio-telemetry = { git = "https://github.com/Roberdan/convergio-sdk", tag = "v0.1.7", version = "0.1.6" }
+convergio-sdk = { git = "https://github.com/Roberdan/convergio-sdk", tag = "v0.1.9" }
+convergio-types = { git = "https://github.com/Roberdan/convergio-sdk", tag = "v0.1.9", version = "0.1.6" }
+convergio-db = { git = "https://github.com/Roberdan/convergio-sdk", tag = "v0.1.9", version = "0.1.6" }
+convergio-telemetry = { git = "https://github.com/Roberdan/convergio-sdk", tag = "v0.1.9", version = "0.1.6" }
 
 # External convergio crates
 # TODO: uncomment when convergio-file-transport repo is published on GitHub
