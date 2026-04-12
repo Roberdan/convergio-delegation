@@ -4,7 +4,7 @@
 //! Currently, file-transport calls are stubbed out because the dependency is unavailable.
 
 use crate::queries::{complete_delegation, update_delegation_status, update_remote_path};
-use crate::types::{DelegationStatus, DelegationStep, PipelineConfig};
+use crate::types::{validate_shell_path, DelegationStatus, DelegationStep, PipelineConfig};
 use convergio_db::pool::ConnPool;
 use convergio_mesh::peers_registry::peers_conf_path_from_env;
 use convergio_mesh::peers_types::PeersRegistry;
@@ -45,8 +45,11 @@ pub async fn run_delegation_pipeline(
     config: &PipelineConfig,
 ) -> Result<PipelineResult, BoxErr> {
     let ssh_target = resolve_ssh_target(peer_name)?;
+    validate_shell_path(&ssh_target)?;
     // Sync directly to peer's repo (not a temp subdirectory)
     let remote_path = config.remote_base.clone();
+    validate_shell_path(&remote_path)?;
+    validate_shell_path(&config.project_root)?;
 
     // Step 1: rsync files to peer's repo (including .git for push/PR)
     update_delegation_status(
@@ -77,8 +80,13 @@ pub async fn run_delegation_pipeline(
     // }
 
     // Stub: run rsync via plain SSH until file-transport is available
+    let excludes: String = config
+        .exclude_patterns
+        .iter()
+        .map(|p| format!(" --exclude={p}"))
+        .collect();
     let rsync_cmd = format!(
-        "rsync -az --delete {} {}:{}/",
+        "rsync -az --delete{excludes} {} {}:{}/",
         config.project_root, ssh_target, remote_path
     );
     let rsync_out = tokio::process::Command::new("sh")
@@ -149,7 +157,7 @@ pub async fn run_delegation_pipeline(
         }
     }
     // Give daemon time to start before spawning agent
-    std::thread::sleep(std::time::Duration::from_secs(3));
+    tokio::time::sleep(std::time::Duration::from_secs(3)).await;
 
     // Step 2: Spawn agent on peer
     update_delegation_status(
@@ -194,8 +202,11 @@ pub async fn sync_back(
     config: &PipelineConfig,
 ) -> Result<(), BoxErr> {
     let ssh_target = resolve_ssh_target(peer_name)?;
+    validate_shell_path(&ssh_target)?;
     // Sync directly to peer's repo (not a temp subdirectory)
     let remote_path = config.remote_base.clone();
+    validate_shell_path(&remote_path)?;
+    validate_shell_path(&config.project_root)?;
 
     update_delegation_status(
         pool,
@@ -216,8 +227,13 @@ pub async fn sync_back(
     // convergio_file_transport::rsync::execute_rsync(&pull_req, &ssh_target).await?;
 
     // Stub: run rsync via plain SSH until file-transport is available
+    let excludes: String = config
+        .exclude_patterns
+        .iter()
+        .map(|p| format!(" --exclude={p}"))
+        .collect();
     let rsync_cmd = format!(
-        "rsync -az --delete {}:{}/ {}/",
+        "rsync -az --delete{excludes} {}:{}/ {}/",
         ssh_target, remote_path, config.project_root
     );
     let rsync_out = tokio::process::Command::new("sh")
