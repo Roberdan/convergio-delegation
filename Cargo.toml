@@ -18,7 +18,7 @@ convergio-telemetry = { git = "https://github.com/Roberdan/convergio-sdk", tag =
 # External convergio crates
 # TODO: uncomment when convergio-file-transport repo is published on GitHub
 # convergio-file-transport = { git = "https://github.com/Roberdan/convergio-file-transport", tag = "convergio-file-transport-v0.1.1" , version = "0.1" }
-convergio-mesh = { git = "https://github.com/Roberdan/convergio-mesh", tag = "convergio-mesh-v0.1.4", version = "0.1" }
+convergio-mesh = { git = "https://github.com/Roberdan/convergio-mesh", tag = "convergio-mesh-v0.1.5", version = "0.1" }
 
 # Common deps — pin same versions as SDK for compatibility
 chrono = { version = "0.4", features = ["serde"] }
