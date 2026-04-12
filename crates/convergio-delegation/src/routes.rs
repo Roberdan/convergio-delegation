@@ -10,7 +10,9 @@ use convergio_types::events::DomainEventSink;
 use serde::Deserialize;
 use serde_json::{json, Value};
 
-use crate::types::{DelegateMarkRequest, DelegateRequest, PipelineConfig};
+use crate::types::{
+    validate_peer_name, validate_shell_path, DelegateMarkRequest, DelegateRequest, PipelineConfig,
+};
 use crate::{monitor, pipeline, queries};
 
 /// Query parameters for listing delegations.
@@ -42,6 +44,9 @@ async fn mark_delegated(
     State(st): State<DelegationState>,
     Json(req): Json<DelegateMarkRequest>,
 ) -> Json<Value> {
+    if let Err(e) = validate_peer_name(&req.peer) {
+        return Json(json!({"ok": false, "error": e}));
+    }
     let delegation_id = uuid::Uuid::new_v4().to_string();
     let conn = match st.pool.get() {
         Ok(c) => c,
@@ -65,6 +70,9 @@ async fn spawn_delegation(
     State(st): State<DelegationState>,
     Json(req): Json<DelegateRequest>,
 ) -> Json<Value> {
+    if let Err(e) = validate_peer_name(&req.peer) {
+        return Json(json!({"ok": false, "error": e}));
+    }
     let delegation_id = uuid::Uuid::new_v4().to_string();
 
     // Resolve project root from env or cwd
@@ -73,6 +81,9 @@ async fn spawn_delegation(
             .map(|p| p.to_string_lossy().to_string())
             .unwrap_or_else(|_| ".".to_string())
     });
+    if let Err(e) = validate_shell_path(&project_root) {
+        return Json(json!({"ok": false, "error": format!("project_root: {e}")}));
+    }
     let config = PipelineConfig {
         project_root: project_root.clone(),
         ..PipelineConfig::default()

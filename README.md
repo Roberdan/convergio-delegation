@@ -5,7 +5,7 @@
 [![Rust](https://img.shields.io/badge/rust-stable-orange)](https://www.rust-lang.org/)
 [![Zero Warnings](https://img.shields.io/badge/warnings-0-brightgreen)](#)
 
-CRATE_DESCRIPTION
+Delegation orchestrator for the Convergio mesh — copy files, spawn remote agents, monitor execution, sync results back, and notify on completion.
 
 Part of the [Convergio](https://github.com/Roberdan/convergio) ecosystem.
 

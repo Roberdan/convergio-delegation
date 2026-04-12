@@ -2,6 +2,44 @@
 
 use serde::{Deserialize, Serialize};
 
+/// Maximum allowed length for a peer name.
+const MAX_PEER_NAME_LEN: usize = 64;
+
+/// Validate that a peer name contains only safe characters (alphanumeric, dash,
+/// underscore, dot). Rejects shell metacharacters to prevent command injection
+/// when the name flows into SSH commands.
+pub fn validate_peer_name(name: &str) -> Result<(), String> {
+    if name.is_empty() {
+        return Err("peer name must not be empty".into());
+    }
+    if name.len() > MAX_PEER_NAME_LEN {
+        return Err(format!("peer name exceeds {MAX_PEER_NAME_LEN} characters"));
+    }
+    if !name
+        .chars()
+        .all(|c| c.is_ascii_alphanumeric() || c == '-' || c == '_' || c == '.')
+    {
+        return Err("peer name contains invalid characters (allowed: a-z, 0-9, -, _, .)".into());
+    }
+    Ok(())
+}
+
+/// Validate that a path string is safe for use in shell commands. Rejects
+/// shell metacharacters to prevent command injection via rsync/ssh.
+pub fn validate_shell_path(path: &str) -> Result<(), String> {
+    if path.is_empty() {
+        return Err("path must not be empty".into());
+    }
+    // Reject characters that enable shell injection
+    const DANGEROUS: &[char] = &[
+        ';', '|', '&', '$', '`', '(', ')', '{', '}', '<', '>', '!', '\n', '\r', '\0', '\'', '"',
+    ];
+    if path.chars().any(|c| DANGEROUS.contains(&c)) {
+        return Err("path contains shell metacharacters".into());
+    }
+    Ok(())
+}
+
 /// Request body for `POST /api/delegate/spawn`.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DelegateRequest {
@@ -164,6 +202,37 @@ mod tests {
         assert_eq!(DelegationStep::Init.to_string(), "init");
         assert_eq!(DelegationStep::FileCopy.to_string(), "file_copy");
         assert_eq!(DelegationStep::Complete.to_string(), "complete");
+    }
+
+    #[test]
+    fn validate_peer_name_accepts_valid() {
+        assert!(validate_peer_name("studio-mac").is_ok());
+        assert!(validate_peer_name("linux_box.local").is_ok());
+        assert!(validate_peer_name("peer123").is_ok());
+    }
+
+    #[test]
+    fn validate_peer_name_rejects_invalid() {
+        assert!(validate_peer_name("").is_err());
+        assert!(validate_peer_name("a; rm -rf /").is_err());
+        assert!(validate_peer_name("peer$(whoami)").is_err());
+        assert!(validate_peer_name(&"a".repeat(65)).is_err());
+    }
+
+    #[test]
+    fn validate_shell_path_accepts_valid() {
+        assert!(validate_shell_path("/home/user/project").is_ok());
+        assert!(validate_shell_path("~/GitHub/convergio").is_ok());
+        assert!(validate_shell_path("./relative/path").is_ok());
+    }
+
+    #[test]
+    fn validate_shell_path_rejects_injection() {
+        assert!(validate_shell_path("").is_err());
+        assert!(validate_shell_path("/tmp; rm -rf /").is_err());
+        assert!(validate_shell_path("/tmp$(whoami)").is_err());
+        assert!(validate_shell_path("/tmp`id`").is_err());
+        assert!(validate_shell_path("path|cat /etc/passwd").is_err());
     }
 
     #[test]
