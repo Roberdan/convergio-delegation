@@ -30,12 +30,25 @@ pub fn validate_shell_path(path: &str) -> Result<(), String> {
     if path.is_empty() {
         return Err("path must not be empty".into());
     }
-    // Reject characters that enable shell injection
+    reject_shell_metacharacters(path, "path")
+}
+
+/// Validate that a shell token (e.g. tmux session name, exclude pattern)
+/// contains no metacharacters that could enable command injection.
+pub fn validate_shell_token(token: &str, label: &str) -> Result<(), String> {
+    if token.is_empty() {
+        return Err(format!("{label} must not be empty"));
+    }
+    reject_shell_metacharacters(token, label)
+}
+
+/// Shared rejection logic for shell-unsafe characters.
+fn reject_shell_metacharacters(value: &str, label: &str) -> Result<(), String> {
     const DANGEROUS: &[char] = &[
         ';', '|', '&', '$', '`', '(', ')', '{', '}', '<', '>', '!', '\n', '\r', '\0', '\'', '"',
     ];
-    if path.chars().any(|c| DANGEROUS.contains(&c)) {
-        return Err("path contains shell metacharacters".into());
+    if value.chars().any(|c| DANGEROUS.contains(&c)) {
+        return Err(format!("{label} contains shell metacharacters"));
     }
     Ok(())
 }
@@ -45,8 +58,6 @@ pub fn validate_shell_path(path: &str) -> Result<(), String> {
 pub struct DelegateRequest {
     pub peer: String,
     pub plan_id: i64,
-    pub tmux_session: Option<String>,
-    pub tmux_window: Option<String>,
 }
 
 /// Request body for `POST /api/mesh/delegate`.
@@ -236,6 +247,21 @@ mod tests {
     }
 
     #[test]
+    fn validate_shell_token_accepts_valid() {
+        assert!(validate_shell_token("cvg-del-001", "tmux_session").is_ok());
+        assert!(validate_shell_token("plan-42", "tmux_window").is_ok());
+        assert!(validate_shell_token("target", "exclude").is_ok());
+    }
+
+    #[test]
+    fn validate_shell_token_rejects_injection() {
+        assert!(validate_shell_token("", "t").is_err());
+        assert!(validate_shell_token("foo;bar", "t").is_err());
+        assert!(validate_shell_token("$(cmd)", "t").is_err());
+        assert!(validate_shell_token("a`id`b", "t").is_err());
+    }
+
+    #[test]
     fn pipeline_config_default_excludes() {
         let cfg = PipelineConfig::default();
         // .git is NOT excluded (needed for push/PR on peer)
@@ -250,8 +276,6 @@ mod tests {
         let req = DelegateRequest {
             peer: "studio-mac".into(),
             plan_id: 42,
-            tmux_session: Some("convergio".into()),
-            tmux_window: Some("task-1".into()),
         };
         let json = serde_json::to_string(&req).unwrap();
         let back: DelegateRequest = serde_json::from_str(&json).unwrap();

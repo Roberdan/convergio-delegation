@@ -30,10 +30,9 @@ pub fn delegation_tools() -> Vec<McpToolDef> {
                 "type": "object",
                 "properties": {
                     "peer": {"type": "string", "description": "Peer name from peers.conf (e.g. macProM1, omarchy)"},
-                    "plan_id": {"type": "integer", "description": "Plan ID to delegate"},
-                    "instructions": {"type": "string", "description": "Instructions for the delegated agent"}
+                    "plan_id": {"type": "integer", "description": "Plan ID to delegate"}
                 },
-                "required": ["peer", "plan_id", "instructions"]
+                "required": ["peer", "plan_id"]
             }),
             min_ring: "trusted".into(),
             path_params: vec![],

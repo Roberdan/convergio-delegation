@@ -4,7 +4,9 @@
 //! Currently, file-transport calls are stubbed out because the dependency is unavailable.
 
 use crate::queries::{complete_delegation, update_delegation_status, update_remote_path};
-use crate::types::{validate_shell_path, DelegationStatus, DelegationStep, PipelineConfig};
+use crate::types::{
+    validate_shell_path, validate_shell_token, DelegationStatus, DelegationStep, PipelineConfig,
+};
 use convergio_db::pool::ConnPool;
 use convergio_mesh::peers_registry::peers_conf_path_from_env;
 use convergio_mesh::peers_types::PeersRegistry;
@@ -80,6 +82,9 @@ pub async fn run_delegation_pipeline(
     // }
 
     // Stub: run rsync via plain SSH until file-transport is available
+    for p in &config.exclude_patterns {
+        validate_shell_token(p, "exclude_pattern")?;
+    }
     let excludes: String = config
         .exclude_patterns
         .iter()
@@ -115,9 +120,10 @@ pub async fn run_delegation_pipeline(
          cargo install --path crates/convergio-cli --force"
     );
     tracing::info!(delegation_id, peer_name, "building daemon + CLI on peer");
-    let build_out = std::process::Command::new("ssh")
+    let build_out = tokio::process::Command::new("ssh")
         .args([&ssh_target, &build_cmd])
-        .output();
+        .output()
+        .await;
     match &build_out {
         Ok(o) if o.status.success() => {
             tracing::info!(delegation_id, "remote build + CLI install OK");
@@ -141,9 +147,10 @@ pub async fn run_delegation_pipeline(
      fi"
     .to_string();
     tracing::info!(delegation_id, peer_name, "restarting daemon on peer");
-    let restart_out = std::process::Command::new("ssh")
+    let restart_out = tokio::process::Command::new("ssh")
         .args([&ssh_target, &restart_cmd])
-        .output();
+        .output()
+        .await;
     match &restart_out {
         Ok(o) if o.status.success() => {
             tracing::info!(delegation_id, "daemon restart OK on peer");
@@ -227,6 +234,9 @@ pub async fn sync_back(
     // convergio_file_transport::rsync::execute_rsync(&pull_req, &ssh_target).await?;
 
     // Stub: run rsync via plain SSH until file-transport is available
+    for p in &config.exclude_patterns {
+        validate_shell_token(p, "exclude_pattern")?;
+    }
     let excludes: String = config
         .exclude_patterns
         .iter()

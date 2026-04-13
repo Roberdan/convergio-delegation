@@ -2,7 +2,7 @@
 
 use tokio::process::Command;
 
-use crate::types::validate_shell_path;
+use crate::types::{validate_shell_path, validate_shell_token};
 
 type BoxErr = Box<dyn std::error::Error + Send + Sync>;
 
@@ -19,6 +19,8 @@ pub async fn spawn_on_peer(
 ) -> Result<(), BoxErr> {
     validate_shell_path(remote_path)?;
     validate_shell_path(ssh_target)?;
+    validate_shell_token(tmux_session, "tmux_session")?;
+    validate_shell_token(tmux_window, "tmux_window")?;
     let mut cmd = build_ssh_command(ssh_target, remote_path, plan_id, tmux_session, tmux_window);
     tracing::info!(
         ssh_target,
