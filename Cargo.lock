@@ -212,7 +212,23 @@ version = "0.1.9"
 source = "git+https://github.com/Roberdan/convergio-sdk?tag=v0.1.9#ccbc95bb56a3a8e78fb713214f3f8b8ea9341f5a"
 dependencies = [
  "chrono",
- "convergio-types",
+ "convergio-types 0.1.9",
+ "r2d2",
+ "r2d2_sqlite",
+ "rusqlite",
+ "serde",
+ "serde_json",
+ "tracing",
+]
+
+[[package]]
+name = "convergio-db"
+version = "0.1.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9ef787dd72baf3e10703c9b6454c18093fd3d40d7b05d6c3875d1db28074e4c2"
+dependencies = [
+ "chrono",
+ "convergio-types 0.1.10",
  "r2d2",
  "r2d2_sqlite",
  "rusqlite",
@@ -227,10 +243,10 @@ version = "0.1.3"
 dependencies = [
  "axum",
  "chrono",
- "convergio-db",
+ "convergio-db 0.1.10",
  "convergio-mesh",
- "convergio-telemetry",
- "convergio-types",
+ "convergio-telemetry 0.1.10",
+ "convergio-types 0.1.10",
  "http-body-util",
  "hyper",
  "rusqlite",
@@ -250,9 +266,9 @@ dependencies = [
  "axum",
  "base64",
  "chrono",
- "convergio-db",
- "convergio-telemetry",
- "convergio-types",
+ "convergio-db 0.1.9",
+ "convergio-telemetry 0.1.9",
+ "convergio-types 0.1.9",
  "hex",
  "hmac",
  "hostname",
@@ -272,7 +288,21 @@ name = "convergio-telemetry"
 version = "0.1.9"
 source = "git+https://github.com/Roberdan/convergio-sdk?tag=v0.1.9#ccbc95bb56a3a8e78fb713214f3f8b8ea9341f5a"
 dependencies = [
- "convergio-types",
+ "convergio-types 0.1.9",
+ "serde",
+ "serde_json",
+ "tracing",
+ "tracing-appender",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "convergio-telemetry"
+version = "0.1.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b1c311d030d9a2bfdaff6ea5bdee97cd9ce2f29c13096e445208053b7926aa5b"
+dependencies = [
+ "convergio-types 0.1.10",
  "serde",
  "serde_json",
  "tracing",
@@ -284,6 +314,20 @@ dependencies = [
 name = "convergio-types"
 version = "0.1.9"
 source = "git+https://github.com/Roberdan/convergio-sdk?tag=v0.1.9#ccbc95bb56a3a8e78fb713214f3f8b8ea9341f5a"
+dependencies = [
+ "axum",
+ "chrono",
+ "dirs",
+ "serde",
+ "serde_json",
+ "thiserror 1.0.69",
+]
+
+[[package]]
+name = "convergio-types"
+version = "0.1.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "418d31b0af7effde6c7d0dabb422c539f1d6a8cea7fe72adf366bbfd2ff21542"
 dependencies = [
  "axum",
  "chrono",
