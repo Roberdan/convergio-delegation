@@ -10,7 +10,6 @@ repository = "https://github.com/Roberdan/convergio-delegation"
 
 [workspace.dependencies]
 # SDK dependencies
-convergio-sdk = { git = "https://github.com/Roberdan/convergio-sdk", tag = "v0.1.9", version = "0.1" }
 convergio-types = "0.1"
 convergio-db = "0.1"
 convergio-telemetry = "0.1"
@@ -18,7 +17,7 @@ convergio-telemetry = "0.1"
 # External convergio crates
 # TODO: uncomment when convergio-file-transport repo is published on GitHub
 # convergio-file-transport = { git = "https://github.com/Roberdan/convergio-file-transport", tag = "convergio-file-transport-v0.1.1" , version = "0.1" }
-convergio-mesh = { git = "https://github.com/Roberdan/convergio-mesh", tag = "convergio-mesh-v0.1.5", version = "0.1" }
+convergio-mesh = "0.1"
 
 # Common deps — pin same versions as SDK for compatibility
 chrono = { version = "0.4", features = ["serde"] }
