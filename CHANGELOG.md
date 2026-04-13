@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/Roberdan/convergio-delegation/compare/v0.1.3...v0.1.4) (2026-04-13)
+
+
+### Bug Fixes
+
+* pass CARGO_REGISTRY_TOKEN to release workflow ([39bae54](https://github.com/Roberdan/convergio-delegation/commit/39bae54aa892e45f3e6d1ba38a3eb0d28443bdf9))
+
 ## [0.1.3](https://github.com/Roberdan/convergio-delegation/compare/v0.1.2...v0.1.3) (2026-04-13)
 
 
