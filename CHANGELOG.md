@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/Roberdan/convergio-delegation/compare/v0.1.4...v0.1.5) (2026-04-13)
+
+
+### Bug Fixes
+
+* **security:** audit pass  command injection, blocking I/O, dead code2 ([83f1e52](https://github.com/Roberdan/convergio-delegation/commit/83f1e5270df2c412e3fa885bc7fb2d1ba7f74a7c))
+
 ## [0.1.4](https://github.com/Roberdan/convergio-delegation/compare/v0.1.3...v0.1.4) (2026-04-13)
 
 
