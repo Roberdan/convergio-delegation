@@ -245,9 +245,9 @@ dependencies = [
 
 [[package]]
 name = "convergio-mesh"
-version = "0.1.8"
+version = "0.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bf46fbb45b8de592ba05206452de3ea7d1ec0096155265e12601f3d0fd343b75"
+checksum = "d0be2904be40d06305abdb93444dcf1ef7007b9bbdf53f144b3f79fe207b3964"
 dependencies = [
  "axum",
  "base64",
